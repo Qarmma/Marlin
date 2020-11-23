@@ -56,6 +56,7 @@ To enable all those features, somme compromises have been made :
 * **Minimize size compilation flags** : added flags for minimizing size of the code (platformio.ini lin 523/524) - may slower execution, but nothing noticed yet -.  
 ## Build and upload
 _Recommending VSCode build (see Marlin firmware description below), can't ensure compilation flags will be taken on Arduino environment and space may miss._  
+_You need to have the U8glib installed in Arduino libraries folder : https://www.arduinolibraries.info/libraries/u8glib_.  
 First, flash a bootloader thanks to an Arduino (did it with a Nano) : https://www.instructables.com/Using-an-Arduino-to-Flash-the-Melzi-Board-Wanhao-I/  
 Then connect to printer directly, open project with VSCode (with PlatformIO add-on) and click "Upload" under env:sanguino1284p . It will build then upload to the printer.  
 _In my case, I added the line upload_port = COM[3] (platformio.ini line 535) to be able to upload. Set the correct COM port number for your printer._
