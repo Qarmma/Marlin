@@ -1,63 +1,63 @@
 # Marlin for Wanhao I3 (v2.1 as test unit)
-This repo is a fork of the original Marlin firmware, edited for compatibility with the Wanhao I3 printer (tested on a v2.1) and based on the configuration file from [arvdsar repo][1].
-[1]: https://github.com/arvdsar/wanhao_i3_v2_Marlin_v2_config "arvdsar repository"
-It enables multiple features offered by merlin, while fixing old I3 firmware problems (like thermistore failure detection).
+This repo is a fork of the original Marlin firmware, edited for compatibility with the Wanhao I3 printer (tested on a v2.1) and based on the configuration file from [arvdsar repo](https://github.com/arvdsar/wanhao_i3_v2_Marlin_v2_config "arvdsar repository").
+It enables multiple features offered by merlin, while fixing old I3 firmware problems (like thermistore failure detection).  
 Multiple changes have been made from arvdsar file :
 ### Speaker is back
-The speaker has been re-enabled and "beep" frequency and time fixed.
-_Enable_ : line 1820 of Configuration.h
-_Duration_ : 50 [ms], line 1829 of Configuration.h
-_Frequency_ : 100 [Hz], line 1830 of Configuration.h
+The speaker has been re-enabled and "beep" frequency and time fixed.  
+_Enable_ : line 1820 of Configuration.h  
+_Duration_ : 50 [ms], line 1829 of Configuration.h  
+_Frequency_ : 100 [Hz], line 1830 of Configuration.h  
 _Speaker definition_ : added speaker pin in pins_SANGUINOLOLU_11.h, line 269 (read further for #ifdef enclosure)
 ### SD card support
-The support for the SD card has been enabled, with R/W support.
-_Enable_ : Config.h line 1732
+The support for the SD card has been enabled, with R/W support.  
+_Enable_ : Config.h line 1732  
 ### 4k7 pullup with 100k thermistor
-For my test unit, the thermistor has the 4k7 pullup for the thermistor, not the 10k one.
-_Nozzle_ : Configuration.h line 420 (set back to 99 if you have the old pullup)
-_Bed_ : Configuration.h line 428 (set back to 99 if you have the old pullup)
+For my test unit, the thermistor has the 4k7 pullup for the thermistor, not the 10k one.  
+_Nozzle_ : Configuration.h line 420 (set back to 99 if you have the old pullup)  
+_Bed_ : Configuration.h line 428 (set back to 99 if you have the old pullup)  
 ### Advanced pause and nozzle park
-Advanced pause and nozzle park have been enabled for runout sensor support and better print pause handling.
-_Advanced pause_ : Configuration_adv.h line 2091
-_Nozzle park_ : Configuration.h line 1528
+Advanced pause and nozzle park have been enabled for runout sensor support and better print pause handling.  
+_Advanced pause_ : Configuration_adv.h line 2091  
+_Nozzle park_ : Configuration.h line 1528  
 ### PID for bed and nozzle
-Enabled PID for bed heating, while modifying default values for both PID's.
-_Bed PID enable_ : Configuration.h line 527
-_New bed values_ : P - 104.88 / I - 20 / D - 366.59 || for 50 [°C]
-_New nozzle values_ : P - 19.38 / I - 0.97 / D - 96.43 || for 220 [°C]
+Enabled PID for bed heating, while modifying default values for both PID's.  
+_Bed PID enable_ : Configuration.h line 527  
+_New bed values_ : P - 104.88 / I - 20 / D - 366.59 || for 50 [°C]  
+_New nozzle values_ : P - 19.38 / I - 0.97 / D - 96.43 || for 220 [°C]  
 #### Get your own values ####
-When starting the printer, ensure bed and nozzle are not heated and around room temperature.
-Then launch a serial terminal, connected with a baudrate of 250'000.
-Commands are
-* M303 C10 E-1 S60 U1 (for bed auto-PID, 10 iterations, around 60 [°C])
-* M303 C10 E0 S220 U1 (for extruder auto-PID, 10 iterations, around 220 [°C])
-Both will output infos, and in the end something like :
-> #define DEFAULT_Kp 19.38
-> #define DEFAULT_Ki 0.97
-> #define DEFAULT_Kd 96.43
-Those values are set automatically (with the U1), but you can set them with :
-* M304 Pxx.xx Ixx.xx Dxx.xx (for bed)
-* M301 Pxx.xx Ixx.xx Dxx.xx (for extruder)
-Finally, save them with :
+When starting the printer, ensure bed and nozzle are not heated and around room temperature.  
+Then launch a serial terminal, connected with a baudrate of 250'000.  
+Commands are :
+* M303 C10 E-1 S60 U1 (for bed auto-PID, 10 iterations, around 60 [°C])  
+* M303 C10 E0 S220 U1 (for extruder auto-PID, 10 iterations, around 220 [°C])  
+Both will output infos, and in the end something like :  
+> #define DEFAULT_Kp 19.38  
+> #define DEFAULT_Ki 0.97  
+> #define DEFAULT_Kd 96.43  
+
+Those values are set automatically (with the U1), but you can set them with :  
+* M304 Pxx.xx Ixx.xx Dxx.xx (for bed)  
+* M301 Pxx.xx Ixx.xx Dxx.xx (for extruder)  
+Finally, save them with :  
 * M500
 ### Default presets values
-Modified values for presets of PLA and ABS (Configuration.h lines 1507+).
-_You can modify them manually on the printer menu._
-_PLA_ : 200 [°C] (extruder) / 50 [°C] (bed)
-_ABS_ : 230 [°C] (extruder) / 80 [°C] (bed)
+Modified values for presets of PLA and ABS (Configuration.h lines 1507+).  
+_You can modify them manually on the printer menu._  
+_PLA_ : 200 [°C] (extruder) / 50 [°C] (bed)  
+_ABS_ : 230 [°C] (extruder) / 80 [°C] (bed)  
 ### Runout sensor support
-Native connector for a runout sensor is not present on the Di3 board. You can find adapters online (or create your own), that will take the signal on the buzzer pin (and so, your buzzer will not be usable anymore).
-That is why said _pins_SANGUINOLOLU_11.h, line 269_ is enclosed by an #ifdef. If the runout is activated, the speaker cannot be used. Beware that both detector and speaker are not wired at the same time.
+Native connector for a runout sensor is not present on the Di3 board. You can find adapters online (or create your own), that will take the signal on the buzzer pin (and so, your buzzer will not be usable anymore).  
+That is why said _pins_SANGUINOLOLU_11.h, line 269_ is enclosed by an #ifdef. If the runout is activated, the speaker cannot be used. Beware that both detector and speaker are not wired at the same time.  
 _Enable_ : Configuration.h line 1174, comment with // if you do not want to use it and have speaker instead
 ### Memory management
 To enable all those features, somme compromises have been made :
 * **Slim LCD menu** : activated slim menus (remove some extraneous items) to recover space, Configuration.h line 1578
 * **M503 disable** : M503 command has been disabled (EEPROM read on serial line), Configuration.h line 1477
-* **Minimize size compilation flags** : added flags for minimizing size of the code (platformio.ini lin 523/524) - may slower execution, but nothing noticed yet -.
+* **Minimize size compilation flags** : added flags for minimizing size of the code (platformio.ini lin 523/524) - may slower execution, but nothing noticed yet -.  
 ## Build and upload
-_Recommending VSCode build (see Marlin firmware description below), can't ensure compilation flags will be taken on Arduino environment and space may miss._
-First, flash a bootloader thanks to an Arduino (did it with a Nano) : https://www.instructables.com/Using-an-Arduino-to-Flash-the-Melzi-Board-Wanhao-I/ 
-Then connect to printer directly, open project with VSCode (with PlatformIO add-on) and click "Upload" under env:sanguino1284p . It will build then upload to the printer.
+_Recommending VSCode build (see Marlin firmware description below), can't ensure compilation flags will be taken on Arduino environment and space may miss._  
+First, flash a bootloader thanks to an Arduino (did it with a Nano) : https://www.instructables.com/Using-an-Arduino-to-Flash-the-Melzi-Board-Wanhao-I/  
+Then connect to printer directly, open project with VSCode (with PlatformIO add-on) and click "Upload" under env:sanguino1284p . It will build then upload to the printer.  
 _In my case, I added the line upload_port = COM[3] (platformio.ini line 535) to be able to upload. Set the correct COM port number for your printer._
 
 =========================================================================================================================
