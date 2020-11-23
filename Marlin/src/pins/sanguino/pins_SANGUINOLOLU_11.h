@@ -260,6 +260,14 @@
     #define BTN_ENC                           28
     #define BTN_EN1                           29
     #define BTN_EN2                           30
+    #ifdef FILAMENT_RUNOUT_SENSOR
+      #define FIL_RUNOUT_PIN                   27
+      #ifdef SPEAKER
+        #undef SPEAKER
+      #endif
+    #else
+      #define BEEPER_PIN                        27
+    #endif
 
   #elif ENABLED(ZONESTAR_LCD)                     // For the Tronxy Melzi boards
 
